@@ -1,0 +1,6 @@
+MX6QTERRA BOARD
+M:	TSHEAVEN <tsheaven@falinux.com>
+S:	Maintained
+F:	board/falinux/terra/
+F:	include/configs/mx6qterra.h
+F:	configs/mx6qterra_defconfig

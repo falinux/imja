@@ -1,0 +1,18 @@
+if TARGET_MX6QTERRA
+
+config DDR3_400MHZ
+	bool "DDR3 Clock Speed 400MHz"
+
+config SYS_BOARD
+	default "mx6qterra"
+
+config SYS_VENDOR
+	default "falinux"
+
+config SYS_SOC
+	default "mx6"
+
+config SYS_CONFIG_NAME
+	default "mx6qterra"
+
+endif
