@@ -1,6 +1,6 @@
 #!/bin/sh
 
-build_path="../build_linux_3.10.17"
+build_path="../build_linux_3.10.53"
 module_install="../out"
 firmware_install="../out"
 image_filename="$build_path/arch/arm/boot/uImage"
@@ -8,7 +8,7 @@ target_filename="uImage.imx6"
 dtb_path="$build_path/arch/arm/boot/dts"
 dtb_filename="imx6q-terra-imja.dtb"
 #dtb_filename="imx6q-nitrogen6x.dtb"
-CROSS_PATH="/opt/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux"
+CROSS_PATH="/opt/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux"
 CROSS_PREFIX="arm-linux-gnueabihf-"
 
 if [ -f .config ]; then
@@ -31,7 +31,7 @@ if [ ! -f $build_path/.config ]; then
 	echo ".....imx6 SIB-IMJA defconfig"	
 	ARCH=arm make arm=ARM CROSS_COMPILE=${CROSS_PATH}/bin/${CROSS_PREFIX} O=$build_path distclean 
 #	ARCH=arm make arm=ARM CROSS_COMPILE=${CROSS_PATH}/bin/${CROSS_PREFIX} O=$build_path imx_v7_terra_defconfig
-	ARCH=arm make arm=ARM CROSS_COMPILE=${CROSS_PATH}/bin/${CROSS_PREFIX} O=$build_path imx_v7_defconfig
+	ARCH=arm make arm=ARM CROSS_COMPILE=${CROSS_PATH}/bin/${CROSS_PREFIX} O=$build_path imx_v7_imja_defconfig
 #	ARCH=arm make arm=ARM CROSS_COMPILE=${CROSS_PATH}/bin/${CROSS_PREFIX} O=$build_path nitrogen6x_defconfig
 fi
 
