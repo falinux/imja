@@ -249,9 +249,19 @@ static irqreturn_t max11801_ts_interrupt(int irq, void *dev_id)
 		case EVENT_INIT:
 			/* fall through */
 		case EVENT_MIDDLE:
+#if 1
+// fixed by falinux
+			x = MAX11801_MAX_X - x;	/* Calibration */
+			input_report_abs(data->input_dev, ABS_Y, x);
+			y = MAX11801_MAX_Y - y;	/* Calibration */
+			input_report_abs(data->input_dev, ABS_X, y);
+            //printk("--------------------->> x = %d, y = %d\n", y, x);
+#else   
+// original codes
 			input_report_abs(data->input_dev, ABS_X, x);
 			y = MAX11801_MAX_Y - y;	/* Calibration */
 			input_report_abs(data->input_dev, ABS_Y, y);
+#endif
 			input_event(data->input_dev, EV_KEY, BTN_TOUCH, 1);
 			input_sync(data->input_dev);
 			break;

@@ -278,6 +278,14 @@
 	pinctrl-0 = <&pinctrl_i2c2_2>;
 	status = "okay";
 
+	max11801@48 {
+		compatible = "maxim,max11801";
+		reg = <0x48>;
+		interrupt-parent = <&gpio3>;
+		interrupts = <26 2>;
+		work-mode = <1>;/*DCM mode*/
+	};
+
 	hdmi: edid@50 {
 		compatible = "fsl,imx6-hdmi-i2c";
 		reg = <0x50>;
@@ -289,6 +297,14 @@
         pinctrl-names = "default";
         pinctrl-0 = <&pinctrl_i2c3_5>;
         status = "okay";
+
+        max11801@48 {
+            compatible = "maxim,max11801";
+            reg = <0x48>;
+            interrupt-parent = <&gpio6>;
+            interrupts = <9 2>;
+            work-mode = <0>;
+        };
 };
 
 &iomuxc {
@@ -331,7 +347,7 @@
                         timing0: LDB-ZJ070 {
                                 clock-frequency = <65000000>;
                                 hactive = <1024>;
-                                vactive = <768>;
+                                vactive = <600>;
                                 hback-porch = <220>;
                                 hfront-porch = <40>;
                                 vback-porch = <21>;
