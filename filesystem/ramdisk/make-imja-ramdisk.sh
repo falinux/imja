@@ -1,45 +1,88 @@
 #!/bin/sh
 
-#------------------------------------------
-# 램디스크를 만든다. 
-#------------------------------------------
-RAMDISK=ramdisk.imx6-2.0-32M.gz
-TARGET_ROOT=target_ramdisk
-DIR_RAMDISK=dir_ramdisk
-ROOT_FILE=../../buildroot-2015.02/output/images/rootfs.tar
+NOW=$(date +"%Y%m%d")
+FILE="rootfs_$NOW.tar.gz"
+BUILD_ROOT_PATH="buildroot-2015.02"
+RAMDISK_FILE=ramdisk.imx6-imja-2.0-32M
 
+echo ""
+echo "============================================================================="
+echo "rootfile-system start...."
+echo ""
 
-if [-f ${ROOT_FILE}]; then
-   echo "tar xf ${ROOT_FILE} -C ${TARGET_ROOT}"
-   tar xf ${ROOT_FILE} -C ${TARGET_ROOT}
+sudo rm -rf ./.rootfs_tmp
+sudo rm -rf ./view_rootfs
+
+if [ -d ./rootfs ]; then
+	sudo cp -a ./rootfs ./.rootfs_tmp
 else
-  echo "no such file ${ROOT_FILE}"
-  exit 1
+	if [ ! -f ./rootfs.tar.gz ]; then
+		echo " > rootfs.tar.gz file find error...."
+		echo " >   ls ../output/images/rootfs.tar.gz"
+		echo " >   cp ../output/images/rootfs.tar.gz ./"
+                echo " >   cp ../${BUILD_ROOT_PATH}/output/images/rootfs.tar.gz ./"
+		echo "============================================================================="
+                cp ../${BUILD_ROOT_PATH}/output/images/rootfs.tar.gz ./
+	fi
+
+	mkdir ./.rootfs_tmp
+	chmod 777 ./.rootfs_tmp
+	sudo tar -zxf rootfs.tar.gz -C ./.rootfs_tmp/
 fi
 
-/sbin/losetup -d /dev/loop1
-rm -rf $RAMDISK
-dd if=/dev/zero of=t_ramdisk bs=1k count=32768
-/sbin/losetup /dev/loop1 t_ramdisk
-/sbin/mke2fs /dev/loop1 
-/sbin/losetup -d /dev/loop1
-mount -t ext2 -o loop t_ramdisk dir_ramdisk
+sudo rm -rf ./add_file/os-release
 
-
-if [-d ${TARGET_ROOT}]; then
-    cp -a target_ramdiskroot/* dir_ramdisk
+if [ -d ../../kernel/out/lib ]; then
+	sudo cp -a ../../kernel/out/lib/* ./.rootfs_tmp/lib/
 else
-
-    mkdir ${TARGET_ROOT} ${DIR_RAMDISK}
-    cp -a ${TARGET_ROOT}/* ${DIR_RAMDISK}
+	echo ""
+	echo "-------------------------------------"
+	echo " kernel/out/lib not found!!!"
+	echo "-------------------------------------"
+	echo ""
 fi
 
-umount dir_ramdisk
-gzip t_ramdisk
-mv t_ramdisk.gz $RAMDISK 
-chmod 777 $RAMDISK
+sudo cp -a ./add_file/* ./.rootfs_tmp/
 
-/sbin/losetup -d /dev/loop1
+if [ -d ./.rootfs_tmp/mnt/nfs ]; then
+	sudo chmod 777 ./.rootfs_tmp/mnt/nfs
+else	
+	sudo mkdir ./.rootfs_tmp/mnt/nfs
+	sudo chmod 777 ./.rootfs_tmp/mnt/nfs
+fi
 
-cp -a $RAMDISK ramdisk.imx6.gz
-cp -a $RAMDISK /tftpboot/
+if [ -f ./.rootfs_tmp/etc/os-release ]; then
+	sudo rm ./.rootfs_tmp/etc/os-release
+fi
+
+#----------------------------
+#----------------------------
+sleep 1
+
+#---------------------------
+# view rootfs 
+cp -a ./.rootfs_tmp ./view_rootfs
+
+sudo chown root ./.rootfs_tmp -R
+sudo chgrp root ./.rootfs_tmp -R
+
+echo ""
+echo "rootfile-system up data to [ rootfs_$NOW.tar.gz ] file, please wait..."
+OWD=`pwd`
+cd ./.rootfs_tmp
+sudo tar -zcf ../${FILE} *
+cd ${OWD}
+
+#---------------------------
+# delete 
+if [ -d ./rootfs ]; then
+	sudo rm -rf ./rootfs
+fi
+
+./mk_ramfs.sh -r ./view_rootfs -n ${RAMDISK_FILE} -c /tftpboot/
+
+echo ""
+echo "rootfile-system end...."
+echo "============================================================================="
+echo ""
+
