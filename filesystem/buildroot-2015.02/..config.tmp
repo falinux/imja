@@ -1521,20 +1521,20 @@ deps_config := \
 	arch/Config.in \
 	Config.in
 
-/home/share/1601_0033_imja_sol/filesystem/buildroot-2015.02/output/build/buildroot-config/auto.conf: \
+/share/SVN/imja_kernel/1601_0033_imja_sol/filesystem/buildroot-2015.02/output/build/buildroot-config/auto.conf: \
 	$(deps_config)
 
 ifneq "$(BR2_DEFCONFIG)" ""
-/home/share/1601_0033_imja_sol/filesystem/buildroot-2015.02/output/build/buildroot-config/auto.conf: FORCE
+/share/SVN/imja_kernel/1601_0033_imja_sol/filesystem/buildroot-2015.02/output/build/buildroot-config/auto.conf: FORCE
 endif
 ifneq "$(BR2_EXTERNAL)" "support/dummy-external"
-/home/share/1601_0033_imja_sol/filesystem/buildroot-2015.02/output/build/buildroot-config/auto.conf: FORCE
+/share/SVN/imja_kernel/1601_0033_imja_sol/filesystem/buildroot-2015.02/output/build/buildroot-config/auto.conf: FORCE
 endif
 ifneq "$(HOSTARCH)" "x86_64"
-/home/share/1601_0033_imja_sol/filesystem/buildroot-2015.02/output/build/buildroot-config/auto.conf: FORCE
+/share/SVN/imja_kernel/1601_0033_imja_sol/filesystem/buildroot-2015.02/output/build/buildroot-config/auto.conf: FORCE
 endif
-ifneq "$(BR2_VERSION_FULL)" "2015.02"
-/home/share/1601_0033_imja_sol/filesystem/buildroot-2015.02/output/build/buildroot-config/auto.conf: FORCE
+ifneq "$(BR2_VERSION_FULL)" "2015.02-g949a92e-dirty"
+/share/SVN/imja_kernel/1601_0033_imja_sol/filesystem/buildroot-2015.02/output/build/buildroot-config/auto.conf: FORCE
 endif
 
 $(deps_config): ;

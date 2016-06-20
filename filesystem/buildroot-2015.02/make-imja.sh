@@ -1,5 +1,6 @@
 #!/bin/sh
 
+def_config=falinux_imx6q_imja_defconfig
 image_filename="uboot"
 target_filename="uboot.imx.imja"
 CROSS_PATH="/opt/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux"
@@ -9,12 +10,14 @@ CROSS_PREFIX="arm-linux-gnueabihf-"
 if [ ! -f .config ]; then
 	echo ".....imx6 imja defconfig"	
 	ARCH=arm make arm=ARM CROSS_COMPILE=${CROSS_PATH}/bin/${CROSS_PREFIX} distclean 
-	ARCH=arm make arm=ARM CROSS_COMPILE=${CROSS_PATH}/bin/${CROSS_PREFIX} falinux_imx6q_imja_defconfig
+	ARCH=arm make arm=ARM CROSS_COMPILE=${CROSS_PATH}/bin/${CROSS_PREFIX} ${def_config}
 fi
 
 
 if [ "$1" = "" ]; then
-	ARCH=arm make arm=ARM CROSS_COMPILE=${CROSS_PATH}/bin/${CROSS_PREFIX} 
+    ARCH=arm make arm=ARM CROSS_COMPILE=${CROSS_PATH}/bin/${CROSS_PREFIX} 
+else
+    ARCH=arm make arm=ARM CROSS_COMPILE=${CROSS_PATH}/bin/${CROSS_PREFIX} $1
 fi
 
 if [ -f $image_filename ]; then
