@@ -10,17 +10,17 @@
 # 	IMX_CONFIG=board/falinux/mx6qterra/mx6qterra.cfg,MX6Q,FALINUX,TERRA
 #--------------------------------
 
-defconfig="mx6qterra_defconfig"
-image_filename="u-boot.imx"
+defconfig="mx6q_imja_defconfig"
+image_filename="u-boot.imx.imja"
 
 if [ ! -f .config ]; then
-    ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/arm-linux-gnueabihf- make ${defconfig}
+    ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux/bin/arm-linux-gnueabihf- make ${defconfig}
 fi
 
 if [ "$1" = "" ]; then
-    ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/arm-linux-gnueabihf- make
+    ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux/bin/arm-linux-gnueabihf- make
 else
-    ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/arm-linux-gnueabihf- make $1 $2 $3
+    ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux/bin/arm-linux-gnueabihf- make $1 $2 $3
 fi
 
 if [ -f $image_filename ]; then
