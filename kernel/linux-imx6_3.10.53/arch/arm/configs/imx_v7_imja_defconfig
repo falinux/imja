@@ -1260,7 +1260,7 @@ CONFIG_HOSTAP_FIRMWARE=y
 # CONFIG_WL_TI is not set
 # CONFIG_ZD1211RW is not set
 # CONFIG_MWIFIEX is not set
-CONFIG_RTL8188EU=y
+CONFIG_RTL8188EU=m
 
 #
 # Enable WiMAX (Networking options) to see the WiMAX drivers
