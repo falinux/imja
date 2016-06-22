@@ -43,7 +43,7 @@ git디렉토리의 구조는 아래와 같습니다.
 bootloader에는 u-boot디레토리가 있습니다. 툴체인이 설치되었다는 전체 아래 아래와 같이 빌드 합니다.
 
       $ cd bootloder/u-boot
-      $ ./make-imx6.sh
+      $ sudo ./make-imx6.sh
 
 
 컴파일이 끝나면 u-boot이미지는 /tftpboot/u-boot.imx6.imja로 복사가 된다.
