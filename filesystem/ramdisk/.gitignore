@@ -1,0 +1,4 @@
+.rootfs_tmp/*
+view_rootfs/*
+*.gz
+
