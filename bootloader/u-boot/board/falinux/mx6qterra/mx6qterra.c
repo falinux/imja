@@ -305,7 +305,7 @@ static void enable_lvds(struct display_info_t const *dev)
 	writel(reg, &iomux->gpr[2]);
 }
 
-static void enable_lvds_jeida(struct display_info_t const *dev)
+/*static void enable_lvds_jeida(struct display_info_t const *dev)
 {
 	struct iomuxc *iomux = (struct iomuxc *)IOMUXC_BASE_ADDR;
 	u32 reg = readl(&iomux->gpr[2]);
@@ -315,7 +315,7 @@ static void enable_lvds_jeida(struct display_info_t const *dev)
 	reg |= IOMUXC_GPR2_DATA_WIDTH_CH1_24BIT |
 	 	   IOMUXC_GPR2_BIT_MAPPING_CH1_JEIDA;
 	writel(reg, &iomux->gpr[2]);
-}
+}*/
 
 struct display_info_t const displays[] = {{
 	.bus	= -1,
