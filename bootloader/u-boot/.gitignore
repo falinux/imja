@@ -2,3 +2,7 @@
 *.cmd
 scripts/*
 .*
+*.o
+*.su
+u-boot*
+

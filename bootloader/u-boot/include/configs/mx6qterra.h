@@ -206,26 +206,29 @@
     "loadaddr=0x12000000\0" \
     "boot_fdt=try\0" \
     "bootdelay=2\0" \
-    "video=mxcfb0:dev=hdmi,1920x1080@60,if=RGB24 vmalloc=192M\0" \
-    "bootargs=console=ttymxc0,115200 root=/dev/ram0 rw --no-log initrd=0x1E000000,16M ramdisk=32768 video=${video}\0" \
-    "bootargs_sata=setenv bootargs console=ttymxc0,115200 root=/dev/sda1 rw --no-log rootfstype=ext4 rootwait video=${video}\0" \
-    "bootargs_ram=setenv bootargs console=ttymxc0,115200 root=/dev/ram0 rw --no-log initrd=0x1E000000,16M ramdisk=32768 video=${video}\0" \
-    "bootargs_mmc=setenv bootargs console=ttymxc0,115200 root=/dev/mmcblk0p1 rw --no-log rootfstype=ext4 rootdelay=5 video=${video}\0" \
-    "ethaddr=00:FA:14:06:03:00\0" \
-    "serverip=192.168.10.132\0" \
-    "ipaddr=192.168.10.139\0" \
-    "netmask=255.255.0.0\0" \
+    "video=mxcfb0:dev=ldb,LDB-ZJ070,if=RGB666,bpp=16 ldb=sin0 mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24,bpp=32 fbmem=24M vmalloc=400M video=mxcfb2:off\0" \
+    "bootargs=console=ttymxc0,115200 root=/dev/mmcblk3p1 rw --no-log rootfstype=ext4 rootdelay=5 video=${video} host=${serverip}\0" \
+    "bootargs_mmc=setenv bootargs console=ttymxc0,115200 root=/dev/mmcblk3p1 rw --no-log rootfstype=ext4 rootdelay=5 ip0=${ipaddr} eth=${ethaddr} video=${video}\0" \
+    "bootargs_ram=setenv bootargs console=ttymxc0,115200 root=/dev/ram0 rw --no-log initrd=0x1E000000,32M ramdisk=32768 video=${video} host=${serverip}\0" \
+    "bootargs_sata=setenv bootargs console=ttymxc0,115200 root=/dev/sda1 rw --no-log rootfstype=ext4 rootwait ${video} host=${serverip}\0" \
+    "bootcmd=run bootargs_ram bootram_dtb \0" \
+    "bootmmc=mmc dev 0; mmcinfo; mmc read 0x12000000 1000 7000; bootm 0x12000000\0" \
+    "bootmmc_dtb=mmc dev 0; mmcinfo; mmc read 0x11F00000 A00 100; mmc read 0x12000000 1000 4000; bootm 0x12000000 - 0x11F00000\0" \
+    "bootram=mmc dev 0; mmcinfo; mmc read 0x12000000 1000 7000; mmc read 0x1E000000 7000 7000; bootm 0x12000000\0" \
+    "bootram_dtb=mmc dev 0; mmcinfo; mmc read 0x11F00000 A00 100; mmc read 0x12000000 1000 4000; mmc read 0x1E000000 7000 7000; bootm 0x12000000 - 0x11F00000\0" \
+    "dtb=tftpboot 0x11F00000 imx6q-terra-imja.dtb; mmc write 0x11F00000 A00 100\0" \
+    "ethact=FEC\0" \
+    "ethaddr=00:FA:14:06:03:07\0" \
+    "ethprime=FEC\0" \
     "gatewayip=192.168.10.1\0" \
     "ip_dyn=yes\0" \
-    "uboot=tftpboot 0x12000000 u-boot.imx; mmc write 0x12000000 2 600\0" \
-    "kernel=tftpboot 0x12000000 uImage.imx6; mmc write 0x12000000 1000 4000\0" \
-    "ramdisk=tftpboot 0x1E000000 ramdisk.imx6-1.0-32M.gz; mmc write 0x1E000000 7000 4000\0" \
-    "dtb=tftpboot 0x11F00000 imx6q-terra-imja.dtb; mmc write 0x11F00000 A00 100\0" \
-    "bootram=mmc dev 0; mmcinfo; mmc read 0x12000000 1000 4000; mmc read 0x1E000000 7000 4000; bootm 0x12000000\0" \
-    "bootmmc=mmc dev 0; mmcinfo; mmc read 0x12000000 1000 4000; bootm 0x12000000\0" \
-    "bootram_dtb=mmc dev 0; mmcinfo; mmc read 0x11F00000 A00 100; mmc read 0x12000000 1000 4000; mmc read 0x1E000000 7000 4000; bootm 0x12000000 - 0x11F00000\0" \
-    "bootmmc_dtb=mmc dev 0; mmcinfo; mmc read 0x11F00000 A00 100; mmc read 0x12000000 1000 4000; bootm 0x12000000 - 0x11F00000\0" \
-    "bootcmd=run bootargs_ram bootram_dtb \0"
+    "ipaddr=192.168.2.139\0" \
+    "kernel=tftpboot 0x12000000 uImage.imx6.imja; mmc write 0x12000000 1000 4000\0" \
+    "netmask=255.255.0.0\0" \
+    "panel=ZJ070NA-01B\0" \
+    "ramdisk=tftpboot 0x1E000000 ramdisk.imx6-imja-2.0-32M.gz; mmc write 0x1E000000 7000 7000\0" \
+    "serverip=192.168.2.130\0" \
+    "uboot=tftpboot 0x12000000 u-boot.imx.imja; mmc write 0x12000000 2 600\0" \
 
 
 
