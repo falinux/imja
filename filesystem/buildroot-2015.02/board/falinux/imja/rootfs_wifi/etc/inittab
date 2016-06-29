@@ -21,7 +21,7 @@ null::sysinit:/bin/mkdir -p /dev/shm
 null::sysinit:/bin/mount -a
 null::sysinit:/bin/hostname -F /etc/hostname
 #falnux
-null::sysinit:/bin/mkdir/home/falinux
+null::sysinit:/bin/mkdir /home/falinux
 null::sysinit:/bin/mkdir /mnt/mmcblk3p1
 # now run any rc scripts
 ::sysinit:/etc/init.d/rcS
