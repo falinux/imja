@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# Start rtl8188eu....
+#
+
+case "$1" in
+  start)
+	/sbin/modprobe -a 8188eu 
+	if [ -d /sys/class/net/wlan0 ]; then
+		echo "Starting rtl8188eu..."
+		ifconfig wlan0 up
+	else
+		sleep 3
+		echo "Wait for 3 second (wlan0 up)..."
+		if [ -d /sys/class/net/wlan0 ]; then
+			echo "Starting rtl8188eu..."
+			ifconfig wlan0 up
+		fi
+	fi
+	;; 
+  stop)
+       /sbin/modprobe -r 8188eu
+
+	;;
+  restart|reload)
+        $0 stop
+
+        sleep 2
+
+        $0 start
+
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

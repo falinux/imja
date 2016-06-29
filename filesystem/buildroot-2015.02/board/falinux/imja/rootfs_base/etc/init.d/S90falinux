@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# Start falinux
+#
+
+case "$1" in
+ start)
+	echo "Starting falinux..."
+	/usr/sbin/telnetd
+	if [ -f /mnt/mmcblk2p1/boot/mmc_patiton_fusing.sh ]; then
+		/mnt/mmcblk2p1/boot//mmc_patiton_fusing.sh
+	else	
+		/app/run.sh &
+	fi
+	;;
+  stop)
+	;;
+  restart|reload)
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
