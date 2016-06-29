@@ -25,6 +25,27 @@ git디렉토리의 구조는 아래와 같습니다.
 
 
 
+
+**[파티션]**
+------------------------------------------------------------------------------------------------------------------------
+파티션은  microSD 4G기준으로 설명 한다.
+
+
+
+    부트로더 영역
+    ---------------------------------------
+    파티션0 U-Boot       768 KB
+
+    ---------------------------------------
+                            1 M
+    파일시스템
+    ---------------------------------------
+    파티션3 예약            3 M
+    ---------------------------------------
+
+
+
+
 **[toolchain]**
 ------------------------------------------------------------------------------------------------------------------------
 이 디렉토리는 툴체인이 들어 있습니다. 이 툴체인을 받아 /opt디렉토리에서 압축을 풀어 놓습니다.
@@ -43,10 +64,22 @@ git디렉토리의 구조는 아래와 같습니다.
 bootloader에는 u-boot디레토리가 있습니다. 툴체인이 설치되었다는 전체 아래 아래와 같이 빌드 합니다.
 
       $ cd bootloder/u-boot
-      $ sudo ./make-imx6.sh
+      $ ./make-imx6.sh
 
 
 컴파일이 끝나면 u-boot이미지는 /tftpboot/u-boot.imx6.imja로 복사가 된다.
+
+
+초기 설정 값을 재설정 할 경우에는 다음과 같이 vi을 열어 202라인 이후의 값을 수정 한다.
+
+      $ vi bootloader/u-boot/include/configs/mx6qterra.h
+
+저장후 다시 빌드 한다.
+
+디폴트 값을 다시 불러 오기
+
+     TERRA > env default -a
+
 
 
 
@@ -112,36 +145,54 @@ WiFi관련 문서
 
 램디스크에 추가 할 파일 이 있을 경우에는 다음의 디렉토리에 파일을 배치 하도록 한다.
 
-    $ cd filesystem/buildroot-2015.02/board/falinux/imja/rootfs_overlay
+    $ cd filesystem/buildroot-2015.02/board/falinux/imja/rootfs_base or rootfs_wifi
 
+	
+base버전과 WiFi버전은 menuconfig에서 선택을 할 수 있습니다.
+
+	 > System configuration > Root filesystem overlay directories
+	    $(TOPDIR)/board/falinux/imja/rootfs_base or $(TOPDIR)/board/falinux/imja/rootfs_wifi
+
+base와 wifi버전은 wifi를 사용 하는냐 안하느냐의 차이 입니다.
+	 
 현재 파일 구조는 다음과 같습니다.
 
-        ├── bin
-        │   └── cmd_parsing
-        ├── etc
-        │   ├── init.d
-        │   │   ├── S10mdev
-        │   │   ├── S80wireless
-        │   │   └── S90falinux
-        │   ├── mdev
-        │   │   └── automount.sh
-        │   ├── mdev.conf
-        │   ├── passwd
-        │   ├── securetty
-        │   ├── shadow
-        │   └── wpa_supplicant.conf
-        ├── home
-        │   └── falinux
-        ├── lib
-        ├── mnt
-        │   └── mmcblk3p1
-        └── root
-            ├── .mmc_patiton.sh
-            ├── .mmc_patiton_fusing.sh
-            ├── .temp.sh
-            ├── mmc_patiton.sh
-            ├── nfsmnt
-            └── temp.sh
+	imja
+	├── rootfs_base
+	│   ├── bin
+	│   │   └── cmd_parsing
+	│   ├── etc
+	│   │   ├── init.d
+	│   │   │   ├── S10mdev
+	│   │   │   └── S90falinux
+	│   │   ├── inittab
+	│   │   ├── mdev
+	│   │   │   └── automount.sh
+	│   │   ├── mdev.conf
+	│   │   ├── passwd
+	│   │   ├── securetty
+	│   │   └── shadow
+	│   ├── home
+	│   └── root
+	│       └── nfsmnt
+	└── rootfs_wifi
+		├── bin
+		│   └── cmd_parsing
+		├── etc
+		│   ├── init.d
+		│   │   ├── S10mdev
+		│   │   ├── S80wireless
+		│   │   └── S90falinux
+		│   ├── inittab
+		│   ├── mdev
+		│   │   └── automount.sh
+		│   ├── mdev.conf
+		│   ├── passwd
+		│   ├── securetty
+		│   └── shadow
+		├── home
+		└── root
+			└── nfsmnt
 
 
 
@@ -174,6 +225,10 @@ WiFi관련 문서
 
 
 테스트용 으로 파일을 추가 할 경우에는 add_file디렉토리를 만들어 추가 한다. add_file디렉토리가 루트이므로 그에 맞게 파일을 배치 한 다음 make-imja-ramdisk.sh를 실행 한다.
+
+
+    id : falinux
+    pw : falinux8988
 
 
 
