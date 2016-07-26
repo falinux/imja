@@ -1,0 +1,159 @@
+#!/bin/sh
+# Imja mmc 셋팅 쉘
+#
+#
+#
+
+MOUNT_DIR="/mnt/mmc"
+IMAGE_PATH="."
+UBOOT_IMAGE="u-boot.imx6.imja"
+KERNEL_IMAGE="uImage.imx6.imja"
+RAMDISK_IMAGE="ramdisk.imx6-imja-2.0-32M.gz"
+DTB_IMAGE="imx6q-terra-imja.dtb"
+DEV_NAME="/dev/sdb"
+
+CMD=$1
+
+
+case "$CMD" in
+  format)
+  echo -n "Format start: "
+
+        str=`udevadm info --query=all -n ${DEV_NAME} | grep ID_BUS`
+        usb='usb'
+
+        if [ "$usb" = "" ]; then
+            echo "** $1 Device Node Not Found "
+            exit 1
+        fi
+
+        echo umount "${DEV_NAME}"1
+        umount "${DEV_NAME}"1
+
+        echo "DEL PARTITION"
+        (echo p; echo d; echo w) | fdisk ${DEV_NAME}
+        sleep 1
+
+        echo "FORMAT USB"
+        (echo p; echo n; echo p; echo 1; echo 131072; echo ; echo w) | fdisk ${DEV_NAME}
+        sleep 1
+
+        echo "Format ext4 ${DEV_NAME}1"
+        sleep 1
+        mkfs.ext4 ${DEV_NAME}1 -L rootfs
+
+  echo
+  ;;
+  uboot)
+  echo -n "U-boot start: "
+
+        str=`udevadm info --query=all -n ${DEV_NAME} | grep ID_BUS`
+        usb='usb'
+
+        if [ "$usb" = "" ]; then
+            echo "** $1 Device Node Not Found "
+            exit 1
+        fi
+
+        echo "Input U-Boot"
+        echo "${IMAGE_PATH}/${UBOOT_IMAGE}"
+        sleep 1
+        
+        if [ -e ${IMAGE_PATH}/${UBOOT_IMAGE} ]; then
+            dd if=/dev/zero of=${DEV_NAME} bs=512 seek=2 count=2046
+            dd if=${IMAGE_PATH}/${UBOOT_IMAGE} of=${DEV_NAME} bs=512 seek=2 && sync
+        else
+            echo "U-Boot File Not Found!!!"
+        fi
+  echo
+  ;;
+  dtb)
+  echo -n "dtb start: "
+
+        str=`udevadm info --query=all -n ${DEV_NAME} | grep ID_BUS`
+        usb='usb'
+
+        if [ "$usb" = "" ]; then
+            echo "** $1 Device Node Not Found "
+            exit 1
+        fi
+
+        echo "Input dtb"
+        if [ -e ${IMAGE_PATH}/${DTB_IMAGE} ]; then
+            dd if=${IMAGE_PATH}/${DTB_IMAGE} of=${DEV_NAME} bs=512 seek=2560 && sync
+        else
+            echo "Kernel File Not Found!!!"
+        fi
+  echo
+  ;;
+  kernel)
+  echo -n "Kernel start: "
+
+        str=`udevadm info --query=all -n ${DEV_NAME} | grep ID_BUS`
+        usb='usb'
+
+        if [ "$usb" = "" ]; then
+            echo "** $1 Device Node Not Found "
+            exit 1
+        fi
+
+        echo "Input Kernel"
+        if [ -e ${IMAGE_PATH}/${KERNEL_IMAGE} ]; then
+            dd if=${IMAGE_PATH}/${KERNEL_IMAGE} of=${DEV_NAME} bs=512 seek=4096 && sync
+        else
+            echo "Kernel File Not Found!!!"
+        fi
+  echo
+  ;;
+  ramdisk)
+  echo -n "Ramdisk start: "
+
+        str=`udevadm info --query=all -n ${DEV_NAME} | grep ID_BUS`
+        usb='usb'
+
+        if [ "$usb" = "" ]; then
+            echo "** $1 Device Node Not Found "
+            exit 1
+        fi
+
+        echo "Input ramdisk"
+        if [ -e ${IMAGE_PATH}/${KERNEL_IMAGE} ]; then
+           dd if=${IMAGE_PATH}/${RAMDISK_IMAGE} of=${DEV_NAME} bs=512 seek=28672 && sync
+        else
+           echo "Ramdisk File Not Found!!!"
+        fi
+
+  echo
+  ;;
+  init)
+  echo -n "MicroSD init!!!"
+      $0 format
+      sleep 2
+      $0 uboot
+      sleep 1
+      $0 kernel
+      sleep 1
+      $0 ramdisk
+
+   ;;
+  
+  all)
+  $0 format
+  sleep 2
+  $0 uboot
+  sleep 1
+  $0 dtb
+  sleep 1
+  $0 kernel
+  sleep 1
+  $0 ramdisk
+
+  ;;
+  *)
+  echo "Usage: $0 {format|uboot|dtb|ramdisk|init|all}"
+  exit 1
+esac
+exit 0
+
+
+
