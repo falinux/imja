@@ -227,8 +227,8 @@
     "netmask=255.255.0.0\0" \
     "panel=ZJ070NA-01B\0" \
     "ramdisk=tftpboot 0x1E000000 ramdisk.imx6-imja-2.0-32M.gz; mmc write 0x1E000000 7000 7000\0" \
-    "serverip=192.168.2.130\0" \
-    "uboot=tftpboot 0x12000000 u-boot.imx.imja; mmc write 0x12000000 2 600\0" \
+    "serverip=192.168.2.131\0" \
+    "uboot=tftpboot 0x12000000 u-boot.imx.imja; mmc write 0x12000000 2 500\0" \
 
 
 

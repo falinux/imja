@@ -12,7 +12,7 @@
 
 defconfig="mx6q_imja_defconfig"
 image_filename="u-boot.imx"
-target_filename="u-boot.imx.imja"
+target_filename="u-boot.imx6.imja"
 
 if [ ! -f .config ]; then
     ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux/bin/arm-linux-gnueabihf- make ${defconfig}
