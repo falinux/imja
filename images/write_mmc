@@ -105,17 +105,6 @@ case "$CMD" in
 
   echo
   ;;
-  init)
-  echo -n "MicroSD init!!!"
-      $0 format
-      sleep 2
-      $0 uboot
-      sleep 1
-      $0 kernel
-      sleep 1
-      $0 ramdisk
-
-   ;;
   
   all)
   $0 format
@@ -130,7 +119,7 @@ case "$CMD" in
 
   ;;
   *)
-  echo "Usage: $0 {format|uboot|dtb|ramdisk|init|all}"
+  echo "Usage: $0 {format|uboot|dtb|ramdisk|all}"
   exit 1
 esac
 exit 0
