@@ -16,9 +16,8 @@ CMD=$1
 
 
 case "$CMD" in
-  format)
-  echo -n "Format start: "
-
+  usb_check)
+  echo -n "USB Check!!!: "
         str=`udevadm info --query=all -n ${DEV_NAME} | grep ID_BUS`
         usb='usb'
 
@@ -26,6 +25,12 @@ case "$CMD" in
             echo "** $1 Device Node Not Found "
             exit 1
         fi
+
+  echo
+   ;;
+  format)
+  echo -n "Format start: "
+        $0 usb_check
 
         echo umount "${DEV_NAME}"1
         umount "${DEV_NAME}"1
@@ -47,13 +52,7 @@ case "$CMD" in
   uboot)
   echo -n "U-boot start: "
 
-        str=`udevadm info --query=all -n ${DEV_NAME} | grep ID_BUS`
-        usb='usb'
-
-        if [ "$usb" = "" ]; then
-            echo "** $1 Device Node Not Found "
-            exit 1
-        fi
+        $0 usb_check
 
         echo "Input U-Boot"
         echo "${IMAGE_PATH}/${UBOOT_IMAGE}"
@@ -69,14 +68,7 @@ case "$CMD" in
   ;;
   dtb)
   echo -n "dtb start: "
-
-        str=`udevadm info --query=all -n ${DEV_NAME} | grep ID_BUS`
-        usb='usb'
-
-        if [ "$usb" = "" ]; then
-            echo "** $1 Device Node Not Found "
-            exit 1
-        fi
+        $0 format
 
         echo "Input dtb"
         if [ -e ${IMAGE_PATH}/${DTB_IMAGE} ]; then
@@ -89,13 +81,7 @@ case "$CMD" in
   kernel)
   echo -n "Kernel start: "
 
-        str=`udevadm info --query=all -n ${DEV_NAME} | grep ID_BUS`
-        usb='usb'
-
-        if [ "$usb" = "" ]; then
-            echo "** $1 Device Node Not Found "
-            exit 1
-        fi
+        $0 usb_check
 
         echo "Input Kernel"
         if [ -e ${IMAGE_PATH}/${KERNEL_IMAGE} ]; then
@@ -108,13 +94,7 @@ case "$CMD" in
   ramdisk)
   echo -n "Ramdisk start: "
 
-        str=`udevadm info --query=all -n ${DEV_NAME} | grep ID_BUS`
-        usb='usb'
-
-        if [ "$usb" = "" ]; then
-            echo "** $1 Device Node Not Found "
-            exit 1
-        fi
+        $0 usb_check
 
         echo "Input ramdisk"
         if [ -e ${IMAGE_PATH}/${KERNEL_IMAGE} ]; then
