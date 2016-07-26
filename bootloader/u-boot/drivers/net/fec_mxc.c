@@ -360,8 +360,21 @@ static int fec_get_hwaddr(struct eth_device *dev, int dev_id,
 	return !is_valid_ether_addr(mac);
 }
 
+#define I2C_BUS_NUM	2
+#define I2C_PROBE_ID	0x50
+
+static int get_ic_mac_addr(int bus_num, int probe_id, char *addr)
+{
+	if ((!i2c_set_bus_num(bus_num)) && (!i2c_probe(probe_id))) {	
+		i2c_read(probe_id, 0xFA, 1, addr, 6);
+		return 1;
+	}
+	return 0;
+}
+
 static int fec_set_hwaddr(struct eth_device *dev)
 {
+#ifdef ORG
 	uchar *mac = dev->enetaddr;
 	struct fec_priv *fec = (struct fec_priv *)dev->priv;
 
@@ -376,6 +389,46 @@ static int fec_set_hwaddr(struct eth_device *dev)
 	writel((mac[0] << 24) + (mac[1] << 16) + (mac[2] << 8) + mac[3],
 			&fec->eth->paddr1);
 	writel((mac[4] << 24) + (mac[5] << 16) + 0x8808, &fec->eth->paddr2);
+#else
+	uchar *mac = dev->enetaddr;
+	struct fec_priv *fec = (struct fec_priv *)dev->priv;
+
+	char mac_addr[6];
+	int ret;
+	int index;
+
+	writel(0, &fec->eth->iaddr1);
+	writel(0, &fec->eth->iaddr2);
+	writel(0, &fec->eth->gaddr1);
+	writel(0, &fec->eth->gaddr2);
+
+	ret = get_ic_mac_addr(I2C_BUS_NUM, I2C_PROBE_ID, mac_addr);
+	if (ret) {
+		printf("\nFEC MAC Address IC find!\n");
+		writel((mac_addr[0] << 24) + (mac_addr[1] << 16) + (mac_addr[2] << 8) + mac_addr[3],
+				&fec->eth->paddr1);
+		writel((mac_addr[4] << 24) + (mac_addr[5] << 16) + 0x8808, &fec->eth->paddr2);
+
+		printf("MAC Address [");
+		for (index = 0; index < 6; index++) {
+			printf("%02X", mac_addr[index]);
+			if (index < 5) printf(":"); 
+		}
+		printf("]");
+		eth_setenv_enetaddr("ethaddr", mac_addr);
+	} else {
+		printf("\nFEC MAC Address IC Not find!\n");
+		/*
+		 * Set physical address
+		 */
+		writel((mac[0] << 24) + (mac[1] << 16) + (mac[2] << 8) + mac[3],
+				&fec->eth->paddr1);
+		writel((mac[4] << 24) + (mac[5] << 16) + 0x8808, &fec->eth->paddr2);
+	}
+
+	return 0;
+#endif
+
 
 	return 0;
 }
