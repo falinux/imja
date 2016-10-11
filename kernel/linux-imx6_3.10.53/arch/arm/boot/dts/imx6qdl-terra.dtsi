@@ -305,6 +305,10 @@
             interrupts = <9 2>;
             work-mode = <0>;
         };
+        ds1339: rtc@68 {
+            compatible = "ds1307";
+            reg = <0x68>;
+        };
 };
 
 &iomuxc {
