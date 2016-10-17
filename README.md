@@ -2,11 +2,7 @@
 ------------------------------------------------------------------------------------------------------------------------
 소스 다운로드
 
-    $ git clone http://192.168.10.12/erunsee/1601_0033_imja_sol.git
-
-or
-
-    $ git clone git@192.168.10.12:erunsee/1601_0033_imja_sol.git
+    $ git clone https://github.com/falinux/imja.git
 
 위의 경우에는 gitlab에 ssh키가 등록 되어 있어야 합니다.
 
