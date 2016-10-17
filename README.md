@@ -3,10 +3,6 @@
 소스 다운로드
 
     $ git clone https://github.com/falinux/imja.git
-
-위의 경우에는 gitlab에 ssh키가 등록 되어 있어야 합니다.
-
-
    
 
 git디렉토리의 구조는 아래와 같습니다.
