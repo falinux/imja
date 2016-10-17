@@ -221,8 +221,8 @@ base와 wifi버전은 wifi를 사용 하는냐 안하느냐의 차이 입니다.
 테스트용 으로 파일을 추가 할 경우에는 add_file디렉토리를 만들어 추가 한다. add_file디렉토리가 루트이므로 그에 맞게 파일을 배치 한 다음 make-imja-ramdisk.sh를 실행 한다.
 
 
-    id : falinux
-    pw : falinux8988
+    id : root
+    pw : falinux
 
 
 
