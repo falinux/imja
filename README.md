@@ -2,15 +2,7 @@
 ------------------------------------------------------------------------------------------------------------------------
 소스 다운로드
 
-    $ git clone http://192.168.10.12/erunsee/1601_0033_imja_sol.git
-
-or
-
-    $ git clone git@192.168.10.12:erunsee/1601_0033_imja_sol.git
-
-위의 경우에는 gitlab에 ssh키가 등록 되어 있어야 합니다.
-
-
+    $ git clone https://github.com/falinux/imja.git
    
 
 git디렉토리의 구조는 아래와 같습니다.
@@ -229,8 +221,8 @@ base와 wifi버전은 wifi를 사용 하는냐 안하느냐의 차이 입니다.
 테스트용 으로 파일을 추가 할 경우에는 add_file디렉토리를 만들어 추가 한다. add_file디렉토리가 루트이므로 그에 맞게 파일을 배치 한 다음 make-imja-ramdisk.sh를 실행 한다.
 
 
-    id : falinux
-    pw : falinux8988
+    id : root
+    pw : falinux
 
 
 
